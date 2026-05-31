@@ -82,4 +82,22 @@ const me = async (req, res) => {
   }
 };
 
-module.exports = { register, login, me };
+// PUT /auth/profile — edita nome, bio e avatar do usuário autenticado
+const updateProfile = async (req, res) => {
+  try {
+    const { name, bio, avatar_url } = req.body;
+
+    const user = await User.findByPk(req.userId);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    await user.update({ name, bio, avatar_url });
+
+    const { password: _, ...userData } = user.toJSON();
+    return res.status(200).json({ message: 'Perfil atualizado.', user: userData });
+  } catch (err) {
+    console.error('Erro ao atualizar perfil:', err);
+    return res.status(500).json({ error: 'Erro interno no servidor.' });
+  }
+};
+
+module.exports = { register, login, me, updateProfile };
