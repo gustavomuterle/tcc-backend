@@ -82,7 +82,6 @@ const me = async (req, res) => {
   }
 };
 
-// PUT /auth/profile — edita nome, bio e avatar do usuário autenticado
 const updateProfile = async (req, res) => {
   try {
     const { name, bio, avatar_url } = req.body;
